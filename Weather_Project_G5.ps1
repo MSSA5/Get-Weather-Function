@@ -35,7 +35,7 @@ function Get-Weather {
              'Chance of Rain' = $weatherdata.forecast.forecastday.day.daily_chance_of_rain[$i].toString()+'%' 
              'Chance of Snow' = $weatherdata.forecast.forecastday.day.daily_chance_of_snow[$i].toString()+'%'
          }        
-         switch ($days) {
+         switch ($c) {
              1 { 
                  $weatherar[0].date = $weatherdata.forecast.forecastday.date
                  $weatherar[0].condition = $weatherdata.forecast.forecastday.day.condition.text
