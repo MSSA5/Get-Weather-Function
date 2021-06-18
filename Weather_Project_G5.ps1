@@ -1,7 +1,7 @@
 function Get-Weather {
     Param(
          [Parameter(Position= 0, Mandatory = $True, HelpMessage="Please provide the City and State", ValueFromPipeline = $True)]$location,
-         [Parameter(Position= 1, Mandatory = $True, HelpMessage="Forecast Length? (Max 3 Days)", ValueFromPipeline =$True)][int]$days,
+         [Parameter(Position= 1, Mandatory = $True, HelpMessage="Forecast Length? (Max 3 Days)", ValueFromPipeline =$True)]$days,
          [Parameter(Position= 2, Mandatory = $True, HelpMessage="Please provide the units (C/F)", ValueFromPipeline = $True)]$unit
      )
      Try{
