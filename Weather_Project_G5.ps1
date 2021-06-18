@@ -41,5 +41,6 @@ if ($unit -eq 'F' -or $unit -eq 'C') {
 }
 else{
     Write-Host 'Invalid Units.'
+    break
     }
 }
