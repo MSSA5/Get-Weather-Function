@@ -15,7 +15,7 @@ function Get-Weather {
          break
      }
  if ($unit -eq 'F' -or $unit -eq 'C') {
-     Try {$weatherdata = Invoke-WebRequest -uri "http://api.weatherapi.com/v1/forecast.json?key=039ef7eb236d4cd2a48205504203009&q=$location&days=$days" | ConvertFrom-Json
+     Try {$weatherdata = Invoke-WebRequest "http://api.weatherapi.com/v1/forecast.json?key=039ef7eb236d4cd2a48205504203009&q=$location&days=$days" | ConvertFrom-Json
      } Catch {
          Write-Host 'Invalid Location.'
          break
