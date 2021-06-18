@@ -25,10 +25,10 @@ if ($unit -eq 'F' -or $unit -eq 'C') {
             Day = $i+1
             Date = $weatherdata.forecast.forecastday.date[$i]
             Condition = $weatherdata.forecast.forecastday.day.condition.text[$i]
-            'Max ' = $weatherdata.forecast.forecastday.day.$mxt[$i]
-            'Min ' = $weatherdata.forecast.forecastday.day.$mnt[$i]
-            'Chance Rain' = $weatherdata.forecast.forecastday.day.daily_chance_of_rain[$i]+'%'
-            'Chance Snow' = $weatherdata.forecast.forecastday.day.daily_chance_of_snow[$i]+'%'
+            'Max Temp' = $weatherdata.forecast.forecastday.day.$mxt[$i]
+            'Min Temp' = $weatherdata.forecast.forecastday.day.$mnt[$i]
+            'Chance of Rain' = $weatherdata.forecast.forecastday.day.daily_chance_of_rain[$i]+'%'
+            'Chance of Snow' = $weatherdata.forecast.forecastday.day.daily_chance_of_snow[$i]+'%'
         }        
         switch ($days) {
             1 { 
