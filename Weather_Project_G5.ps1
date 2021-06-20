@@ -40,8 +40,11 @@ function Get-Weather {
          }        
          switch ($c) {
              1 { 
-                 $weatherar[0].date = $weatherdata.forecast.forecastday.date
-                 $weatherar[0].condition = $weatherdata.forecast.forecastday.day.condition.text
+                 $weatherar[0].date = $weatherdata.forecast.forecastday.date | Get-Date -Format d
+                 $weatherar[0].'Weather Conditions' = (Get-Culture).TextInfo.ToTitleCase($weatherdata.forecast.forecastday.day.condition.text)
+                 $weatherar[0].'Sun Rise' = $weatherdata.forecast.forecastday.astro.sunrise | Get-date -Format t
+                 $weatherar[0].'Sun Set' = $weatherdata.Forecast.forecastday.astro.sunset | Get-date -Format t
+                 $weatherar[0].'Moon Phase' = $weatherdata.Forecast.forecastday.astro.moon_phase
              }
          } 
      }
