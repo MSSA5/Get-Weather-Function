@@ -18,7 +18,7 @@ function Get-Weather {
      Try {
         $city,$state = $location.split(',')
         $georaw = Invoke-WebRequest "http://www.mapquestapi.com/geocoding/v1/address?key=Yja5atNOmi8Q3XAN1GVjzhBRoIaH158l&city=$city&state=$state" |ConvertFrom-Json
-        $coords = $georaw.results.locations.latlng.lat.toString() +','+ $georaw.results.locations.latlng.lng.ToString()
+        $coords = $georaw.results.locations.latlng.lat[0].toString() +','+ $georaw.results.locations.latlng.lng[0].ToString()
         $weatherdata = Invoke-WebRequest "http://api.weatherapi.com/v1/forecast.json?key=039ef7eb236d4cd2a48205504203009&q=$coords&days=$days" | ConvertFrom-Json
      } Catch {
          Write-Host 'Invalid Location.'
