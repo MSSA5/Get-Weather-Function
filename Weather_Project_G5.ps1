@@ -1,12 +1,13 @@
 function Get-Weather {
+    <# .SYNOPSIS #>
     Param(
-         [Parameter(Position= 0, Mandatory = $True, HelpMessage="Please provide the City, State", ValueFromPipeline = $True)]$location,
-         [Parameter(Position= 1, Mandatory = $True, HelpMessage="Forecast Length? (Max 3 Days)", ValueFromPipeline =$True)]$days,
-         [Parameter(Position= 2, Mandatory = $True, HelpMessage="Please provide the units (C/F)", ValueFromPipeline = $True)][string]$unit
+         [Parameter(Position= 0, ValueFromPipeline = $True)]$location = $(Read-Host -prompt "Please provide the City, State") #The City and State. Format: City, ST
+         ,[Parameter(Position= 1, ValueFromPipeline =$True)]$days = $(Read-Host -prompt "Please provide the Forecast Length (Max 3 Days)") #Whole Numbered Forecast Length.
+         ,[Parameter(Position= 2, ValueFromPipeline = $True)]$unit = $(Read-Host -prompt "Please provide the Units (C/F)") #Temperature Units. Valid inputs are F for fahrenheit or C for celcius.
      )
  if ($unit -eq 'F' -or $unit -eq 'C') {
     Try{
-        [int]$days | Out-Null
+        $days = [byte]$days
     } Catch {
         Write-Host 'Invalid Days.'
         Get-Error -Newest 1 | Write-Host
@@ -14,11 +15,15 @@ function Get-Weather {
     }
     Try {
         $city,$state = $location.split(',')
-        $georaw = Invoke-WebRequest "http://www.mapquestapi.com/geocoding/v1/address?key=Yja5atNOmi8Q3XAN1GVjzhBRoIaH158l&city=$city&state=$state" |ConvertFrom-Json
+        $georaw = Invoke-WebRequest "http://www.mapquestapi.com/geocoding/v1/address?key=Yja5atNOmi8Q3XAN1GVjzhBRoIaH158l&city=$city&state=$state" | ConvertFrom-Json
         $coords = $georaw.results.locations.latlng.lat[0].toString() +','+ $georaw.results.locations.latlng.lng[0].ToString()
         if ($days -gt 3) {
-            Write-Host 'Max Forecast Length is 3 days. Attempting 3 day forecast.'
+            Write-Host 'Maximum Forecast Length is 3 Days. Attempting 3 Day Forecast.'
             $days = 3
+        }
+        if ($days -eq 0) {
+            Write-Host 'Minimum Forecast Length is 1 Day. Attempting 1 Day Forecast.'
+            $days = 1
         }
         $weatherdata = Invoke-WebRequest "http://api.weatherapi.com/v1/forecast.json?key=039ef7eb236d4cd2a48205504203009&q=$coords&days=$days" | ConvertFrom-Json
     } Catch {
@@ -26,7 +31,7 @@ function Get-Weather {
         Get-Error -Newest 1 | Write-Host
         Break
     }
-    [int]$c = $weatherdata.forecast.forecastday.date.Count
+    [byte]$c = $weatherdata.forecast.forecastday.date.Count
     if ($city -ne $weatherdata.location.name) {
         Write-Host 'EXACT LOCATION WAS NOT FOUND.' 
         Write-Host $c 'FORECAST FOR NEAREST MATCH,' $weatherdata.location.name.toUpper() $weatherdata.location.region.toUpper()
@@ -64,7 +69,7 @@ function Get-Weather {
 }
 else{
     Write-Host 'Invalid Units.
-Valid inputs are either F (for fahrenheit) or C (for celcius).'
+Valid inputs are either'F' for fahrenheit or 'C' for celcius.'
     break
     }
 }
